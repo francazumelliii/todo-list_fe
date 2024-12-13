@@ -1,0 +1,17 @@
+
+
+
+
+.created {
+    background-color: #6ea8fe;
+}
+
+.in-progress {
+    background-color: #ffda6a;
+}
+.completed {
+    background-color: #75b798;
+}
+.disabled {
+    background-color: #adb5bd;
+}

@@ -213,5 +213,24 @@ get tasksControls() {
   
       });
   }
+
+  getColor(task: any){
+    switch(task.status.label){
+      case "CREATED":  return "created"
+        break;
+        
+      case "IN PROGRESS":  return "in-progress"
+        break;
+
+      case "COMPLETED":  return "completed"
+        break;
+
+      case "DISABLED":  return "disabled"
+        break;
+
+      default: return null;
+
+    }
+  }
   
 }

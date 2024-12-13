@@ -40,45 +40,55 @@
     
           <div class="task-list mt-4">
             <h3>Tasks</h3>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Label</th>
-                    <th>Description</th>
-                    <th>Category ID</th>
-                    <th>Expiration Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let task of tasks">
-                    <td>{{task.label}}</td>
-                    <td>{{task.description}}</td>
-                    <td>{{task.categoryId}}</td>
-                    <td>{{task.expDate | date:'mediumDate'}}</td>
-                    <td>
-                      <select [(ngModel)]="task.statusId" (change)="updateTaskStatus(task)" [ngModelOptions]="{standalone: true}" class="form-select" [value]="task.statusId">
-                        <option [value]="1">Pending</option>
-                        <option [value]="2">Completed</option>
-                      </select>
-                    </td>
-                    <td>
-                      <button class="btn btn-danger btn-sm me-2" (click)="deleteTask(task.id)">
-                        <i class="bi bi-trash"></i> Delete
-                      </button>
-                      <button class="btn btn-primary btn-sm" (click)="editTask(task)">
-                        <i class="bi bi-pencil"></i> Edit
-                      </button>
-                    </td>
-                  </tr>
-                  <tr *ngIf="tasks.length === 0">
-                    <td colspan="6" class="text-center">No tasks available</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            
+            <form [formGroup]="todoForm" (ngSubmit)="submitForm()">
+  <!-- Altri campi del form come Label, Description, ecc. -->
+
+  <div formArrayName="tasks">
+    <div *ngFor="let task of tasks.controls; let i = index" [formGroupName]="i">
+      <div class="row mb-2">
+        <div class="col">
+          <label for="label">Label:</label>
+          <input id="label" formControlName="label" type="text" />
+        </div>
+
+        <div class="col">
+          <label for="description">Description:</label>
+          <textarea id="description" formControlName="description"></textarea>
+        </div>
+
+        <div class="col">
+          <label for="categoryId">Category:</label>
+          <select id="categoryId" formControlName="categoryId">
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.label }}</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <label for="statusId">Status:</label>
+          <select id="statusId" formControlName="statusId">
+            <option *ngFor="let status of statuses" [value]="status.id">{{ status.label }}</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <label for="expDate">Expiration Date:</label>
+          <input id="expDate" formControlName="expDate" type="date" (change)="checkExpDate()" />
+        </div>
+
+        <div class="col">
+          <button type="button" class="btn btn-danger" (click)="removeTask(i)">
+            <i class="bi bi-trash"></i> Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="todoForm.invalid || !this.isDateValid">Submit</button>
+</form>
+
+
           </div>
         </div>
       </div>

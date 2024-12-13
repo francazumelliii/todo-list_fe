@@ -63,8 +63,6 @@ tasks: any = []
   ngOnInit(): void {
     this.loadCategories();
     this.loadStatuses();
-    this.getAllTodo()
-
     
     // Se c'è un `todoId`, carica i dati del Todo per l'aggiornamento
     if (this.todoId) {
@@ -83,15 +81,16 @@ tasks: any = []
       this.statuses = statuses;
     });
   }
-  getAllTodo(){
+  getAllTodos(){
     this.todoService.getAllTodo(this.userId).subscribe((response: any) => {
       this.tasks = response
     },(error: any)=> {
-      console.error(error);
+      console.error(error)
     })
   }
 
   loadTodoData() {
+    this.getAllTodos()
     // Carica i dati del Todo tramite il servizio
     this.todoService.getTodoById(this.userId, this.todoId!).subscribe((todo: { [key: string]: any; }) => {
       this.todoForm.patchValue(todo);

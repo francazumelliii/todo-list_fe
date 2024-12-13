@@ -29,12 +29,13 @@ export interface Task {
 export class TodoListComponent implements OnInit {
 tasksFormArray: any;
 i: any;
-editTask(task: Task): void {
+editTask(task: any): void {
   this.todoId = task.id; // Imposta il task attualmente in modifica
   this.todoForm.patchValue({
     label: task.label,
     description: task.description,
-    categoryId: task.categoryId,
+    categoryId: task.category.id,
+    statusId: task.status.id,
     expDate: task.expDate,
     // statusId è opzionale perché viene gestito separatamente
   });
@@ -197,4 +198,20 @@ get tasksControls() {
   backToLogin(): void {
     this.router.navigate(['/login']);
   }
+
+  updateStatus(task: any) {
+    const body = {
+      statusId: task.status.id
+    };
+    this.todoService.updateTask(this.userId, task.id, body)
+      .subscribe((response: any) => {
+        const index = this.tasks.findIndex((t: Task) => t.id == task.id);
+        this.tasks.splice(index, 1, response);
+        this.tasks.sort((a: any, b: any) => {
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        });
+  
+      });
+  }
+  
 }

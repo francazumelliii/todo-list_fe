@@ -197,4 +197,39 @@ get tasksControls() {
   backToLogin(): void {
     this.router.navigate(['/login']);
   }
+
+  updateStatus(task: any) {
+    const body = {
+      statusId: task.status.id
+    };
+    this.todoService.updateTask(this.userId, task.id, body)
+      .subscribe((response: any) => {
+        const index = this.tasks.findIndex((t: Task) => t.id == task.id);
+        this.tasks.splice(index, 1, response);
+        this.tasks.sort((a: any, b: any) => {
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        });
+  
+      });
+  }
+
+  getColor(task: any){
+    switch(task.status.label){
+      case "CREATED":  return "created"
+        break;
+        
+      case "IN PROGRESS":  return "in-progress"
+        break;
+
+      case "COMPLETED":  return "completed"
+        break;
+
+      case "DISABLED":  return "disabled"
+        break;
+
+      default: return null;
+
+    }
+  }
+  
 }

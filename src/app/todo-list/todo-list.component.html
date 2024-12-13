@@ -66,7 +66,7 @@
                     <td>{{ task.category?.label }}</td>
                     <td>{{ task.expDate | date:'mediumDate' }}</td>
                     <td>
-                      <select [(ngModel)]="task.status.id" [ngModelOptions]="{standalone: true}" class="form-select">
+                      <select [class]="getColor(task)" [(ngModel)]="task.status.id" [ngModelOptions]="{standalone: true}" (change)="updateStatus(task)" class="form-select">
                         <option *ngFor="let status of statuses" [value]="status.id">{{status.label}}</option>
                       </select>
                       

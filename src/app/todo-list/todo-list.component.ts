@@ -42,6 +42,7 @@ throw new Error('Method not implemented.');
   userId = 1; // L'ID dell'utente, dovrebbe essere dinamico
   todoId?: number;
   router: any;
+  isDateValid: boolean = false;
 tasks: any;
 
   constructor(
@@ -105,6 +106,10 @@ tasks: any;
         console.log('Todo creato', response);
       });
     }
+  }
+  checkExpDate(){
+    const date = this.todoForm.get("expDate")?.value;
+    this.isDateValid = new Date(date) >= new Date()
   }
 
 

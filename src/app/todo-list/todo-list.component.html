@@ -31,10 +31,11 @@
             </select>
           
             <label for="expDate">Expiration Date:</label>
-            <input id="expDate" formControlName="expDate" type="date" />
+            <input id="expDate" formControlName="expDate" type="date" (change)="checkExpDate()" />
           
-            <button type="submit" [disabled]="todoForm.invalid">Submit</button>
+            <button type="submit" [disabled]="todoForm.invalid || !this.isDateValid">Submit</button>
           </form>
+          <small class="text-danger" *ngIf="!isDateValid && todoForm.get('expDate')?.touched">Expiring date must be after today</small>
           
     
           <div class="task-list mt-4">

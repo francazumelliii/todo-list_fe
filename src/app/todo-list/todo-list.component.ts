@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TodoService } from '../todo.service';
 import { CategoryService } from '../category.service';
 import { StatusService } from '../status.service';
+import { Router } from '@angular/router';
 
 
 export interface Task {
@@ -58,7 +59,6 @@ deleteTask(taskId: number) {
   statuses: any[] = [];
   userId = 1; // L'ID dell'utente, dovrebbe essere dinamico
   todoId?: number;
-  router: any;
   isDateValid: boolean = false;
   tasks: any = [];
 
@@ -66,7 +66,8 @@ deleteTask(taskId: number) {
     private fb: FormBuilder,
     private todoService: TodoService,
     private categoryService: CategoryService,
-    private statusService: StatusService
+    private statusService: StatusService,
+    private router: Router
   ) {
     this.todoForm = this.fb.group({
       label: new FormControl('', Validators.required),

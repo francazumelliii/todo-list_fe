@@ -19,12 +19,12 @@
                             <h5 class="card-title text-center mb-5 fw-light fs-5">Login in </h5>
                             <form [formGroup]="loginForm" (ngSubmit)="login()">
                                 <div class="form-floating mb-3">
-                                  <input type="email" class="form-control" id="floatingInput" formControlName="email" placeholder="name@example.com">
-                                  <label for="floatingInput">Email address</label>
+                                  <input type="email" class="form-control" id="floatingInput" formControlName="email" placeholder="admin">
+                                  <label for="floatingInput">admin</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                  <input type="password" class="form-control" id="floatingPassword" formControlName="password" placeholder="Password">
-                                  <label for="floatingPassword">Password</label>
+                                  <input type="password" class="form-control" id="floatingPassword" formControlName="password" placeholder="admin">
+                                  <label for="floatingPassword">admin</label>
                                 </div>
                                 <div class="d-grid">
                                   <button type="submit" [disabled]="loginForm.invalid">Vai alla To-Do List</button>

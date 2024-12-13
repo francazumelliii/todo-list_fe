@@ -29,12 +29,30 @@ export interface Task {
 export class TodoListComponent implements OnInit {
 tasksFormArray: any;
 i: any;
-editTask(_t70: any) {
-throw new Error('Method not implemented.');
+editTask(task: Task): void {
+  this.todoId = task.id; // Imposta il task attualmente in modifica
+  this.todoForm.patchValue({
+    label: task.label,
+    description: task.description,
+    categoryId: task.categoryId,
+    expDate: task.expDate,
+    // statusId è opzionale perché viene gestito separatamente
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // Scorri in alto al form
 }
-deleteTask(arg0: any) {
-throw new Error('Method not implemented.');
+
+deleteTask(taskId: number) {
+  this.todoService.deleteTask(this.userId, taskId).subscribe({
+    next: () => {
+      console.log('Task eliminato con successo');
+      this.tasks = this.tasks.filter((task: any) => task.id !== taskId); // Aggiorna la lista localmente
+    },
+    error: (err) => {
+      console.error('Errore durante l\'eliminazione del task:', err);
+    }
+  });
 }
+
 updateTaskStatus(_t70: any) {
 throw new Error('Method not implemented.');
 }
@@ -81,6 +99,8 @@ loadTasks() {
   });
 }
 
+
+
 get tasksControls() {
   return this.tasksFormArray.controls as FormGroup[];
 }
@@ -113,25 +133,49 @@ get tasksControls() {
     });
   }
 
-  submitForm() {
+  submitForm(): void {
     if (this.todoForm.invalid) {
       return;
     }
-
+  
     const formValue = this.todoForm.value;
+  
     if (this.todoId) {
-      // Aggiorna il Todo esistente
-      this.todoService.updateTodo(this.userId, this.todoId!, formValue).subscribe((response: any) => {
-        console.log('Todo aggiornato', response);
+      // Aggiorna il task esistente
+      this.todoService.updateTask(this.userId, this.todoId, formValue).subscribe({
+        next: (updatedTask) => {
+          console.log('Task aggiornato con successo:', updatedTask);
+          // Aggiorna la lista locale dei task
+          const index = this.tasks.findIndex((t: any) => t.id === this.todoId);
+          if (index !== -1) {
+            this.tasks[index] = updatedTask;
+          }
+          this.resetForm(); // Reset del form
+        },
+        error: (err) => {
+          console.error('Errore durante l\'aggiornamento del task:', err);
+        }
       });
     } else {
-      // Crea un nuovo Todo
-      this.todoService.createTodo(this.userId, formValue).subscribe((response: any) => {
-        console.log('Todo creato', response);
-        this.tasks.push(response);
+      // Crea un nuovo task
+      this.todoService.createTodo(this.userId, formValue).subscribe({
+        next: (newTask) => {
+          console.log('Task creato con successo:', newTask);
+          this.tasks.push(newTask);
+          this.resetForm();
+        },
+        error: (err) => {
+          console.error('Errore durante la creazione del task:', err);
+        }
       });
     }
   }
+  resetForm(): void {
+    this.todoId = undefined;
+    this.todoForm.reset();
+  }
+  
+  
   checkExpDate(){
     const date = this.todoForm.get("expDate")?.value;
     this.isDateValid = new Date(date) >= new Date()

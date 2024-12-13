@@ -11,15 +11,17 @@ export class TodoService {
   createTask(task: Task) {
     throw new Error('Method not implemented.');
   }
-  updateTask(id: number, task: Task) {
-    throw new Error('Method not implemented.');
+  updateTask(userId: number, taskId: number, updatedTask: Partial<Task>): Observable<Task> {
+    return this.http.patch<Task>(`${this.apiUrl}/${userId}/todo/${taskId}`, updatedTask);
   }
+  
   updateTaskStatus(taskId: any, arg1: { statusId: any; }) {
     throw new Error('Method not implemented.');
   }
-  deleteTask(taskId: any) {
-    throw new Error('Method not implemented.');
+  deleteTask(userId: number, taskId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${userId}/todo/${taskId}`);
   }
+  
   getTasksByUserId(userId: number) {
     throw new Error('Method not implemented.');
   }

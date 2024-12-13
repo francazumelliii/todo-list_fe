@@ -1,11 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Task } from './todo-list/todo-list.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
+  getTasks: any;
+  createTask(task: Task) {
+    throw new Error('Method not implemented.');
+  }
+  updateTask(id: number, task: Task) {
+    throw new Error('Method not implemented.');
+  }
+  updateTaskStatus(taskId: any, arg1: { statusId: any; }) {
+    throw new Error('Method not implemented.');
+  }
+  deleteTask(taskId: any) {
+    throw new Error('Method not implemented.');
+  }
+  getTasksByUserId(userId: number) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8080/api/v1/user';
 
   constructor(private http: HttpClient) {}

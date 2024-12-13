@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TodoService } from '../todo.service';
@@ -27,6 +27,8 @@ export interface Task {
   imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
 export class TodoListComponent implements OnInit {
+tasksFormArray: any;
+i: any;
 editTask(_t70: any) {
 throw new Error('Method not implemented.');
 }
@@ -43,7 +45,7 @@ throw new Error('Method not implemented.');
   todoId?: number;
   router: any;
   isDateValid: boolean = false;
-tasks: any;
+  tasks: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -58,8 +60,30 @@ tasks: any;
       statusId: ['', Validators.required],
       expDate: ['', Validators.required]
     });
+    this.tasksFormArray = this.fb.array([]); // Inizializza il FormArray
   }
 
+  // Metodo per caricare i task
+loadTasks() {
+  this.todoService.getTasks(this.userId).subscribe((tasks: Task[]) => {
+    this.tasksFormArray.clear(); // Pulisci il FormArray
+    tasks.forEach((task) => {
+      const taskGroup = this.fb.group({
+        id: [task.id],
+        label: [task.label],
+        description: [task.description],
+        categoryId: [task.categoryId],
+        expDate: [task.expDate],
+        statusId: [task.statusId]
+      });
+      this.tasksFormArray.push(taskGroup);
+    });
+  });
+}
+
+get tasksControls() {
+  return this.tasksFormArray.controls as FormGroup[];
+}
   ngOnInit(): void {
     this.loadCategories();
     this.loadStatuses();
@@ -104,6 +128,7 @@ tasks: any;
       // Crea un nuovo Todo
       this.todoService.createTodo(this.userId, formValue).subscribe((response: any) => {
         console.log('Todo creato', response);
+        this.tasks.push(response);
       });
     }
   }

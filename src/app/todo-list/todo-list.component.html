@@ -66,10 +66,10 @@
                     <td>{{ task.category?.label }}</td>
                     <td>{{ task.expDate | date:'mediumDate' }}</td>
                     <td>
-                      <select [(ngModel)]="task.statusId" (change)="updateTaskStatus(task)" [ngModelOptions]="{standalone: true}" class="form-select" [value]="task.statusId">
-                        <option [value]="1">Pending</option>
-                        <option [value]="2">Completed</option>
+                      <select [(ngModel)]="task.status.id" [ngModelOptions]="{standalone: true}" class="form-select">
+                        <option *ngFor="let status of statuses" [value]="status.id">{{status.label}}</option>
                       </select>
+                      
                     </td>
                     <td>
                       <button class="btn btn-danger btn-sm me-2" (click)="deleteTask(task.id)">

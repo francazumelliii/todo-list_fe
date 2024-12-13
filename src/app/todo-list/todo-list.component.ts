@@ -53,9 +53,6 @@ deleteTask(taskId: number) {
   });
 }
 
-updateTaskStatus(_t70: any) {
-throw new Error('Method not implemented.');
-}
   todoForm: FormGroup;
   categories: any[] = [];
   statuses: any[] = [];

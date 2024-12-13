@@ -17,21 +17,20 @@
                     <div class="card border-0 shadow rounded-3 my-5">
                         <div class="card-body p-4 p-sm-5">
                             <h5 class="card-title text-center mb-5 fw-light fs-5">Login in </h5>
-                            <form>
+                            <form [formGroup]="loginForm" (ngSubmit)="login()">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="floatingInput"
-                                        placeholder="name@example.com">
-                                    <label for="floatingInput">Email address</label>
+                                  <input type="email" class="form-control" id="floatingInput" formControlName="email" placeholder="name@example.com">
+                                  <label for="floatingInput">Email address</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="floatingPassword"
-                                        placeholder="Password">
-                                    <label for="floatingPassword">Password</label>
+                                  <input type="password" class="form-control" id="floatingPassword" formControlName="password" placeholder="Password">
+                                  <label for="floatingPassword">Password</label>
                                 </div>
                                 <div class="d-grid">
-                                    <button (click)="navigateToTodo()">Vai alla To-Do List</button>
+                                  <button type="submit" [disabled]="loginForm.invalid">Vai alla To-Do List</button>
                                 </div>
-                            </form>
+                              </form>
+                              
                         </div>
                     </div>
                 </div>

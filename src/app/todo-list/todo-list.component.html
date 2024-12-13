@@ -26,7 +26,7 @@
             </select>
           
             <label for="statusId">Status:</label>
-            <select id="statusId" formControlName="statusId">
+            <select id="statusId" formControlName="statusId" >
               <option *ngFor="let status of statuses" [value]="status.id">{{ status.label }}</option>
             </select>
           
@@ -59,7 +59,7 @@
                     <td>{{task.categoryId}}</td>
                     <td>{{task.expDate | date:'mediumDate'}}</td>
                     <td>
-                      <select [(ngModel)]="task.statusId" (change)="updateTaskStatus(task)" [ngModelOptions]="{standalone: true}" class="form-select">
+                      <select [(ngModel)]="task.statusId" (change)="updateTaskStatus(task)" [ngModelOptions]="{standalone: true}" class="form-select" [value]="task.statusId">
                         <option [value]="1">Pending</option>
                         <option [value]="2">Completed</option>
                       </select>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TodoService } from '../todo.service';
@@ -43,7 +43,7 @@ throw new Error('Method not implemented.');
   todoId?: number;
   router: any;
   isDateValid: boolean = false;
-tasks: any;
+tasks: any = []
 
   constructor(
     private fb: FormBuilder,
@@ -52,17 +52,19 @@ tasks: any;
     private statusService: StatusService
   ) {
     this.todoForm = this.fb.group({
-      label: ['', Validators.required],
-      description: ['', Validators.required],
-      categoryId: ['', Validators.required],
-      statusId: ['', Validators.required],
-      expDate: ['', Validators.required]
+      label: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      categoryId: new FormControl('', Validators.required),
+      statusId: new FormControl('', Validators.required),
+      expDate:  new FormControl('', Validators.required),
     });
   }
 
   ngOnInit(): void {
     this.loadCategories();
     this.loadStatuses();
+    this.getAllTodos()
+
     
     // Se c'è un `todoId`, carica i dati del Todo per l'aggiornamento
     if (this.todoId) {
@@ -80,6 +82,13 @@ tasks: any;
     this.statusService.getStatuses().subscribe((statuses: any[]) => {
       this.statuses = statuses;
     });
+  }
+  getAllTodos(){
+    this.todoService.getAllTodo(this.userId).subscribe((response: any) => {
+      this.tasks = response
+    },(error: any)=> {
+      console.error(error);
+    })
   }
 
   loadTodoData() {
@@ -104,12 +113,19 @@ tasks: any;
       // Crea un nuovo Todo
       this.todoService.createTodo(this.userId, formValue).subscribe((response: any) => {
         console.log('Todo creato', response);
+        this.tasks.push(response)
       });
     }
   }
   checkExpDate(){
     const date = this.todoForm.get("expDate")?.value;
     this.isDateValid = new Date(date) >= new Date()
+
+    console.log(this.todoForm.get("label")?.valid)
+    console.log(this.todoForm.get("description")?.valid)
+    console.log(this.todoForm.get("expDate")?.valid)
+
+
   }
 
 

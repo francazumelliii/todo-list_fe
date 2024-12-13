@@ -66,16 +66,9 @@
                     <td>{{ task.category?.label }}</td>
                     <td>{{ task.expDate | date:'mediumDate' }}</td>
                     <td>
-                      <!-- Usa una select per cambiare lo stato -->
-                      <select
-                        [(ngModel)]="task.statusId"
-                        (change)="updateTaskStatus(i)"
-                        class="form-select"
-                        [ngModelOptions]="{ standalone: true }"
-                      >
-                        <option *ngFor="let status of statuses" [value]="status.id">
-                          {{ status.label }}
-                        </option>
+                      <select [(ngModel)]="task.statusId" (change)="updateTaskStatus(task)" [ngModelOptions]="{standalone: true}" class="form-select" [value]="task.statusId">
+                        <option [value]="1">Pending</option>
+                        <option [value]="2">Completed</option>
                       </select>
                     </td>
                     <td>

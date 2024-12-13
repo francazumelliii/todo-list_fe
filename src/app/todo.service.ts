@@ -40,4 +40,11 @@ export class TodoService {
   getTodoById(userId: number, todoId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${userId}/todo/${todoId}`);
   }
+
+  getAllTodo(userId: number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/${userId}/todo/all`)
+  }
+  
+
+
 }

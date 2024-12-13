@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { TodoService } from '../todo.service';
 import { CategoryService } from '../category.service';
 import { StatusService } from '../status.service';
-import { provideHttpClient } from '@angular/common/http';
 
 
 export interface Task {
@@ -29,12 +28,13 @@ export interface Task {
 export class TodoListComponent implements OnInit {
 tasksFormArray: any;
 i: any;
-editTask(task: Task): void {
+editTask(task: any): void {
   this.todoId = task.id; // Imposta il task attualmente in modifica
   this.todoForm.patchValue({
     label: task.label,
     description: task.description,
-    categoryId: task.categoryId,
+    categoryId: task.category.id,
+    statusId: task.status.id,
     expDate: task.expDate,
     // statusId è opzionale perché viene gestito separatamente
   });

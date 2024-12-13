@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TodoService } from '../todo.service';
 import { CategoryService } from '../category.service';
 import { StatusService } from '../status.service';
-import { HttpClientModule } from '@angular/common/http';  // Importa HttpClientModule
-import { HttpClient } from '@angular/common/http';  // Importa HttpClient
+import { provideHttpClient } from '@angular/common/http';
 
 
 export interface Task {
@@ -24,7 +23,8 @@ export interface Task {
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule]  // Correct use of HttpClientModule
+  providers: [],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
 export class TodoListComponent implements OnInit {
 editTask(_t70: any) {
